@@ -15,6 +15,11 @@ def home():
 def registration():
     return render_template('registration.html')
 
+@app.route('/doctor_home')
+def doctor_home():
+    patients = Patient.query.all()
+    return render_template('doctor_home.html', patients=patients)
+
 @app.route('/patientregister', methods=['GET', 'POST'])
 def patient_register():
     form = RegisterForm()

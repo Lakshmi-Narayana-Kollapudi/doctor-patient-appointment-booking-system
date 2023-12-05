@@ -20,7 +20,7 @@
     <P class="fs-3 fw-medium"> For Registered Users</P><br><br>
     <div class="d-flex justify-content-around flex-column mb-3">
       <a href="#" class="btn btn-light fs-5 fw-medium">Patient Login</a><br>
-      <a href="#" class="btn btn-light fs-5 fw-medium">Doctor Login</a><br>
+      <a href="{{ url_for('doctor_home') }}" class="btn btn-light fs-5 fw-medium">Doctor Login</a><br>
       <a href="#" class="btn btn-light fs-5 fw-medium">Admin Login</a>
     </div>
   </div>
@@ -32,7 +32,7 @@
 </body>
 <style>
   body{
-    background-image: url('static/images/home.jpg');
+    background-image: url('/static/images/home.jpg');
     background-size: cover;
   }
   .login-box {
