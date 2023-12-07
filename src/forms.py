@@ -2,16 +2,18 @@ from flask import Flask, render_template, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, PasswordField, SubmitField
 from wtforms.validators import Length, EqualTo, Email, DataRequired,ValidationError
-from src.models import Patient
+from src.models import NewPatient, Patient
 from src import db
 from src import app
 
 with app.app_context():
     db.create_all()
 
+
+# ------------------------------------------------------ Patient Registration form --------------------------------------------------------------------
 class RegisterForm(FlaskForm):
     def validate_email(self, email_to_check):
-        email = Patient.query.filter_by(email=email_to_check.data).first()
+        email = NewPatient.query.filter_by(email=email_to_check.data).first() or Patient.query.filter_by(email=email_to_check.data).first()
         if email:
             raise ValidationError('Email Address already exists! Please try a different email address')
         
@@ -43,3 +45,11 @@ class RegisterForm(FlaskForm):
     )
     address = StringField("Address",validators=[DataRequired()])
     submit = SubmitField(label='Register')
+
+
+# --------------------------------------------------------- Patient Login form -------------------------------------------------------------
+class PatientLoginForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Login')
+

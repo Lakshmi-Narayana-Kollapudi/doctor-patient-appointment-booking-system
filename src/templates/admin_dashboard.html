@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block content %}
+<p class="fs-2 fw-medium" style="text-align: center; color: white;">Welcome Admin</p><br><br>
+<p class="fs-3 fw-medium" style="text-align: center; color: white;">Patient Registration Requests</p>
+<div class="table-responsive">
+    <table class="table table-hover table-dark w-auto" style="margin-left: auto; margin-right: auto;">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">E-Mail</th>
+                <th scope="col">Phone No</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">Address</th>
+                <th scope="col" style="width: 200px; text-align: center;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Your rows inside the table HERE: -->
+            {% for newpatients in newpatients %}
+            <tr>
+                <td>{{ newpatients.id }}</td>
+                <td>{{ newpatients.first_name }}</td>
+                <td>{{ newpatients.last_name }}</td>
+                <td>{{ newpatients.email }}</td>
+                <td>{{ newpatients.phone_number }}</td>
+                <td>{{ newpatients.date_of_birth }}</td>
+                <td>{{ newpatients.address }}</td>
+                <td style="width: 200px;">
+                    <div class="d-inline-flex justify-content-evenly" style="width: 200px;">
+                    <form action="/admin/approve_patient/{{ newpatients.id }}" method="post">
+                        <button class="btn btn-outline btn-sm btn-success" type="submit">Approve</button>
+                    </form>
+                    <form action="/admin/delete_patient/{{ newpatients.id }}" method="post">
+                        <button class="btn btn-outline btn-sm btn-danger" type="submit">Delete</button>
+                    </form>
+                </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p class="fs-3 fw-medium" style="text-align: center; color: white;">Doctor Registration Requests</p>
+<div class="table-responsive">
+    <table class="table table-hover table-dark w-auto" style="margin-left: auto; margin-right: auto;">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">E-Mail</th>
+                <th scope="col">Phone No</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">Address</th>
+                <th scope="col" style="width: 200px; text-align: center;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Your rows inside the table HERE: -->
+            {% for newdoctors in newdoctors %}
+            <tr>
+                <td>{{ patients.id }}</td>
+                <td>{{ patients.first_name }}</td>
+                <td>{{ patients.last_name }}</td>
+                <td>{{ patients.email }}</td>
+                <td>{{ patients.phone_number }}</td>
+                <td>{{ patients.date_of_birth }}</td>
+                <td>{{ patients.address }}</td>
+                <td style="width: 200px;">
+                    <div class="d-inline-flex justify-content-evenly" style="width: 200px;">
+                    <form action="/admin/approve_patient/{{ patients.id }}" method="post">
+                        <button class="btn btn-outline btn-sm btn-success" type="submit">Approve</button>
+                    </form>
+                    <form action="/admin/delete_patient/{{ patients.id }}" method="post">
+                        <button class="btn btn-outline btn-sm btn-danger" type="submit">Delete</button>
+                    </form>
+                </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p class="fs-3 fw-medium" style="text-align: center; color: white;">Registrered Patients</p>
+<div class="table-responsive">
+    <table class="table table-hover table-dark w-auto" style="margin-left: auto; margin-right: auto;">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">E-Mail</th>
+                <th scope="col">Phone No</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Your rows inside the table HERE: -->
+            {% for patients in patients %}
+            <tr>
+                <td>{{ patients.id }}</td>
+                <td>{{ patients.first_name }}</td>
+                <td>{{ patients.last_name }}</td>
+                <td>{{ patients.email }}</td>
+                <td>{{ patients.phone_number }}</td>
+                <td>{{ patients.date_of_birth }}</td>
+                <td>{{ patients.address }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p class="fs-3 fw-medium" style="text-align: center; color: white;">Registrered Doctors</p>
+<div class="table-responsive">
+    <table class="table table-hover table-dark w-auto" style="margin-left: auto; margin-right: auto;">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">E-Mail</th>
+                <th scope="col">Phone No</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Your rows inside the table HERE: -->
+            {% for doctors in doctors %}
+            <tr>
+                <td>{{ patients.id }}</td>
+                <td>{{ patients.first_name }}</td>
+                <td>{{ patients.last_name }}</td>
+                <td>{{ patients.email }}</td>
+                <td>{{ patients.phone_number }}</td>
+                <td>{{ patients.date_of_birth }}</td>
+                <td>{{ patients.address }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

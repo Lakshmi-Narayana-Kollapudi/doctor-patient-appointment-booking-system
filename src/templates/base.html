@@ -13,14 +13,14 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
-<body>
+<body style="background-image: url('/static/images/bg2.jpg'); background-size: cover;">
 
     <div class="d-flex justify-content-between" style="padding: 20px;">
         <a class="fs-3 fw-medium" style="text-decoration: none; text-align: center; color: white">MediBook+</a>
-        <a href="{{ url_for('home') }}" class="btn btn-outline-info fs-6 fw-medium">Home</a>
+        <a href="{{ url_for('home') }}" class="btn btn-primary fs-6 fw-medium">Home</a>
     </div>
 
-    <P class="fs-1 fw-medium" style="text-align: center; color: white;"> MediBook Health System</P><br><br>
+    <P class="fs-1 fw-medium" style="text-align: center; color: white;"> MediBook Health System</P>
 
     {% block content %}
 
@@ -38,12 +38,7 @@
         crossorigin="anonymous"></script>
 </body>
 
-<style>
-body{
-    background-image: url('static/images/bg2.jpg');
-    background-size: cover;
-  }
+{% block style %}
 
-</style>
-
+{% endblock %}
 </html>
