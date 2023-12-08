@@ -5,7 +5,17 @@ Admin Dashboard
 {% endblock %}
 
 {% block content %}
-<p class="fs-2 fw-medium" style="text-align: center; color: white;">Welcome Admin</p><br><br>
+<p class="fs-2 fw-medium" style="text-align: center; color: white;">Welcome Admin</p>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="container alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+{% endwith %}<br>
 <p class="fs-3 fw-medium" style="text-align: center; color: white;">Patient Registration Requests</p>
 <div class="table-responsive">
     <table class="table table-hover table-dark w-auto" style="margin-left: auto; margin-right: auto;">
@@ -57,6 +67,8 @@ Admin Dashboard
                 <th scope="col">ID</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
+                <th scope="col">Doctor ID</th>
+                <th scope="col">Speciality</th>
                 <th scope="col">E-Mail</th>
                 <th scope="col">Phone No</th>
                 <th scope="col">Date of Birth</th>
@@ -68,19 +80,21 @@ Admin Dashboard
             <!-- Your rows inside the table HERE: -->
             {% for newdoctors in newdoctors %}
             <tr>
-                <td>{{ patients.id }}</td>
-                <td>{{ patients.first_name }}</td>
-                <td>{{ patients.last_name }}</td>
-                <td>{{ patients.email }}</td>
-                <td>{{ patients.phone_number }}</td>
-                <td>{{ patients.date_of_birth }}</td>
-                <td>{{ patients.address }}</td>
+                <td>{{ newdoctors.id }}</td>
+                <td>{{ newdoctors.first_name }}</td>
+                <td>{{ newdoctors.last_name }}</td>
+                <td>{{ newdoctors.doctor_id }}</td>
+                <td>{{ newdoctors.speciality }}</td>
+                <td>{{ newdoctors.email }}</td>
+                <td>{{ newdoctors.phone_number }}</td>
+                <td>{{ newdoctors.date_of_birth }}</td>
+                <td>{{ newdoctors.address }}</td>
                 <td style="width: 200px;">
                     <div class="d-inline-flex justify-content-evenly" style="width: 200px;">
-                    <form action="/admin/approve_patient/{{ patients.id }}" method="post">
+                    <form action="/admin/approve_doctor/{{ newdoctors.id }}" method="post">
                         <button class="btn btn-outline btn-sm btn-success" type="submit">Approve</button>
                     </form>
-                    <form action="/admin/delete_patient/{{ patients.id }}" method="post">
+                    <form action="/admin/delete_doctor/{{ newdoctors.id }}" method="post">
                         <button class="btn btn-outline btn-sm btn-danger" type="submit">Delete</button>
                     </form>
                 </div>
@@ -130,6 +144,8 @@ Admin Dashboard
                 <th scope="col">ID</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
+                <th scope="col">Doctor ID</th>
+                <th scope="col">Speciality</th>
                 <th scope="col">E-Mail</th>
                 <th scope="col">Phone No</th>
                 <th scope="col">Date of Birth</th>
@@ -140,13 +156,15 @@ Admin Dashboard
             <!-- Your rows inside the table HERE: -->
             {% for doctors in doctors %}
             <tr>
-                <td>{{ patients.id }}</td>
-                <td>{{ patients.first_name }}</td>
-                <td>{{ patients.last_name }}</td>
-                <td>{{ patients.email }}</td>
-                <td>{{ patients.phone_number }}</td>
-                <td>{{ patients.date_of_birth }}</td>
-                <td>{{ patients.address }}</td>
+                <td>{{ doctors.id }}</td>
+                <td>{{ doctors.first_name }}</td>
+                <td>{{ doctors.last_name }}</td>
+                <td>{{ doctors.doctor_id }}</td>
+                <td>{{ doctors.speciality }}</td>
+                <td>{{ doctors.email }}</td>
+                <td>{{ doctors.phone_number }}</td>
+                <td>{{ doctors.date_of_birth }}</td>
+                <td>{{ doctors.address }}</td>
             </tr>
             {% endfor %}
         </tbody>
