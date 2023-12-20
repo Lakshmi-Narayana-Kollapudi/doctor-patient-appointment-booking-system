@@ -4,56 +4,79 @@
 Patient Dashboard
 {% endblock %}
 
+{% block nav %}
+<a href="{{ url_for('patient_update_profile') }}" class="btn btn-primary fs-6 fw-medium">Update Profile</a>
+{% endblock %}
 
 {% block content %}
-<p class="fs-3 fw-medium" style="text-align: center; color: white;">Welcome {{patient.first_name}}</p><br><br>
-
-
-
+<p class="fs-3 fw-medium" style="text-align: center; color: white;">Welcome {{ patient.first_name }}</p><br>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="container alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+<br>
 <div class="px-4 text-center">
     <div class="row gx-5">
-      <div class="col">
-       <div class="p-3">
-        <p class="fs-4 fw-medium" style="text-align: center; color: white;">Doctors and their Scheduled Appointments</p>
+        <div class="col">
+            <div class="p-3">
+                <p class="fs-4 fw-medium" style="text-align: center; color: white;">Doctors and their Scheduled
+                    Appointments</p>
 
-            <table class="container table table-hover table-dark">
-                <thead>
-                    <tr>
-                        <!-- Your Columns HERE -->
-                        <th scope="col">Doctor ID</th>
-                        <th scope="col">Doctor Name</th>
-                        <th scope="col">Doctor Speciality</th>
-                        <th scope="col">Phone No</th>
-                        <th scope="col">Booked Dates</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Your rows inside the table HERE: -->
-                    {% for doctors in doctors %}
-                    <tr>
-                        <td>{{ doctors.doctor_id }}</td>
-                        <td>{{ doctors.first_name }}</td>
-                        <td>{{ doctors.speciality }}</td>
-                        <td>{{ doctors.phone_number }}</td>
-                        <td>{{ doctors.date_of_birth }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-       </div>
-      </div>
-      <div class="col">
-        <div class="p-3">
-            <p class="fs-4 fw-medium" style="text-align: center; color: white;">Schedule your appointment with a Doctor</p>
-            <form method="POST" action="/patient/login">
-                <label for="email" style="color: white; text-align: start;">Choose Doctor</label><br>
-                <input type="email" id="email" name="email" required><br><br>
-                <label for="password" style="color: white; text-align: start;">Choose Appointment Date</label><br>
-                <input type="date" id="password" name="password" required><br><br>
-                <button type="submit" class="btn btn-warning fs-6 fw-bold"> Submit Appointment Request</button>
-            </form>
+                <table class="container table table-hover table-dark">
+                    <thead>
+                        <tr>
+                            <!-- Your Columns HERE -->
+                            <th scope="col">Doctor ID</th>
+                            <th scope="col">Doctor Name</th>
+                            <th scope="col">Doctor Speciality</th>
+                            <th scope="col">Phone No</th>
+                            <th scope="col">Booked Dates</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Your rows inside the table HERE: -->
+                        {% for doctors in doctors %}
+                        <tr>
+                            <td>{{ doctors.doctor_id }}</td>
+                            <td>{{ doctors.first_name }}</td>
+                            <td>{{ doctors.speciality }}</td>
+                            <td>{{ doctors.phone_number }}</td>
+                            <td>{{ doctors.date_of_birth }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-      </div>
+        <div class="col">
+            <div class="p-3">
+                <p class="fs-4 fw-medium" style="text-align: center; color: white;">Schedule your appointment with a
+                    Doctor</p>
+                <div
+                    style="padding: 40px; width: fit-content;background: rgba(5, 28, 48, 0.925); box-sizing: border-box; box-shadow: 0 15px 25px rgba(0, 0, 0, .6); border-radius: 10px;margin-left: 150px;">
+                    <form method="POST" action="">
+                        {{ form.csrf_token }}
+                        <div>
+                            <label for="doctor" style="color: white; text-align: start;" class="form-label">Choose Doctor</label><br>
+                            {{ form.doctor(class="form-control", placeholder="Choose Doctor",
+                            style="width:300px;")
+                            }}<br>
+                            <label for="appointment_date" style="color: white; text-align: start;" class="form-label">Choose Appointment
+                                Date</label><br>
+                            {{ form.appointment_date(class="form-control", placeholder="Appointment Date",
+                            style="width:300px;") }}<br>
+                            {{ form.submit(class="btn btn-warning fs-6 fw-bold") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 {% endblock %}

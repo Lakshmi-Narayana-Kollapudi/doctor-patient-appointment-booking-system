@@ -13,10 +13,25 @@
 
   <div class="d-flex justify-content-between" style="padding: 20px;">
     <a class="fs-3 fw-medium" style="text-decoration: none; color: white;">MediBook+</a>
+    <div>
     <a href="{{ url_for('home') }}" class="btn btn-primary fs-6 fw-medium">Home</a>
+    <a href="{{ url_for('doctor_update_profile') }}" class="btn btn-primary fs-6 fw-medium">Update Profile</a>
+    </div>
   </div>
   <p class="fs-1 fw-medium" style="text-align: center; color: white;">MediBook Health System</p>
   <p class="fs-3 fw-medium" style="text-align: center; color: white;">Welcome {{doctor.first_name}}</p>
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="container alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</div>
   <p class="fs-3 fw-medium" style="text-align: center; color: white;">Your Fixed Appointments...</p>
 
 

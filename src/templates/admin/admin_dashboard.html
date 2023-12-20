@@ -4,6 +4,10 @@
 Admin Dashboard
 {% endblock %}
 
+{% block nav %}
+<a href="{{ url_for('admin_update',admin_id=1) }}" class="btn btn-primary fs-6 fw-medium">Reset Password</a>
+{% endblock %}
+
 {% block content %}
 <p class="fs-2 fw-medium" style="text-align: center; color: white;">Welcome Admin</p>
 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -117,6 +121,7 @@ Admin Dashboard
                 <th scope="col">Phone No</th>
                 <th scope="col">Date of Birth</th>
                 <th scope="col">Address</th>
+                <th scope="col" style="width: 200px; text-align: center;">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -130,6 +135,13 @@ Admin Dashboard
                 <td>{{ patients.phone_number }}</td>
                 <td>{{ patients.date_of_birth }}</td>
                 <td>{{ patients.address }}</td>
+                <td style="width: 200px;">
+                    <div class="d-inline-flex justify-content-evenly" style="width: 200px;">
+                    <form action="/admin/delete/patient/{{ patients.id }}" method="post">
+                        <button class="btn btn-outline btn-sm btn-danger" type="submit">Delete</button>
+                    </form>
+                    </div>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -150,6 +162,7 @@ Admin Dashboard
                 <th scope="col">Phone No</th>
                 <th scope="col">Date of Birth</th>
                 <th scope="col">Address</th>
+                <th scope="col" style="width: 200px; text-align: center;">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -165,6 +178,13 @@ Admin Dashboard
                 <td>{{ doctors.phone_number }}</td>
                 <td>{{ doctors.date_of_birth }}</td>
                 <td>{{ doctors.address }}</td>
+                <td style="width: 200px;">
+                    <div class="d-inline-flex justify-content-evenly" style="width: 200px;">
+                    <form action="/admin/delete/doctor/{{ doctors.id }}" method="post">
+                        <button class="btn btn-outline btn-sm btn-danger" type="submit">Delete</button>
+                    </form>
+                    </div>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

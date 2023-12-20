@@ -1,6 +1,5 @@
-from flask import Flask, render_template, redirect, url_for, flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, PasswordField, SubmitField
+from wtforms import StringField, DateField, PasswordField, SubmitField,SelectField
 from wtforms.validators import Length, EqualTo, Email, DataRequired,ValidationError
 from src.models import NewPatient, Patient, Doctor, NewDoctor
 from src import db
@@ -8,7 +7,27 @@ from src import app
 
 with app.app_context():
     db.create_all()
+# --------------------------------------------------------- Appointment Form ------------------------------------------------------------------------
+class AppointmentForm(FlaskForm):
+    doctor = SelectField('Choose Doctor', coerce=int, validators=[DataRequired()])
+    appointment_date = DateField('Appointment Date', validators=[DataRequired()])
+    submit = SubmitField('Submit Appointment Request')
 
+    def __init__(self, *args, **kwargs):
+        super(AppointmentForm, self).__init__(*args, **kwargs)
+        self.doctor.choices = [(0, 'Select Doctor')] + [(doctor.id, doctor.first_name) for doctor in Doctor.query.all()]
+# --------------------------------------------------------- Admin Login form ----------------------------------------------------------------------------
+class AdminLoginForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Login')
+
+# --------------------------------------------------------- Admin Password reset form ----------------------------------------------------------------
+class AdminPasswordResetForm(FlaskForm):
+    new_email = StringField('New Email', validators=[DataRequired(),Email()])
+    new_password = PasswordField('New Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired()])
+    submit = SubmitField('Update')
 
 # ------------------------------------------------------ Patient Registration form --------------------------------------------------------------------
 class RegisterForm(FlaskForm):
@@ -47,13 +66,24 @@ class RegisterForm(FlaskForm):
     submit = SubmitField(label='Register')
 
 
-# --------------------------------------------------------- Patient Login form -------------------------------------------------------------
+# --------------------------------------------------------- Patient Login form -------------------------------------------------------------------------------
 class PatientLoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
 
+# ------------------------------------------------------ Patient details update form -----------------------------------------------------------------
+class UpdatePatientForm(FlaskForm):
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    date_of_birth = DateField('Date of Birth', validators=[DataRequired()])
+    phone_number = StringField('Phone Number', validators=[DataRequired()])
+    address = StringField('Address', validators=[DataRequired()])
+    submit = SubmitField('Update')
+
+    
 # ------------------------------------------------------ Doctor Registration form --------------------------------------------------------------------
 class DoctorRegisterForm(FlaskForm):
     def validate_email(self, email_to_check):
@@ -92,8 +122,19 @@ class DoctorRegisterForm(FlaskForm):
     address = StringField("Address",validators=[DataRequired()])
     submit = SubmitField(label='Register')
 
-# --------------------------------------------------------- Doctor Login form -------------------------------------------------------------
+# --------------------------------------------------------- Doctor Login form ----------------------------------------------------------------------------
 class DoctorLoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+
+# ------------------------------------------------------ Doctor details update form -----------------------------------------------------------------
+class UpdateDoctorForm(FlaskForm):
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    speciality = StringField("Speciality", validators=[DataRequired()])
+    phone_number = StringField('Phone Number', validators=[DataRequired()])
+    address = StringField('Address', validators=[DataRequired()])
+    submit = SubmitField('Update')

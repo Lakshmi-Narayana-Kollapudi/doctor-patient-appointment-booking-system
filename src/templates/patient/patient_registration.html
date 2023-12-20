@@ -14,6 +14,7 @@
         <a class="fs-3 fw-medium" style="text-decoration: none; color: white;">MediBook+</a>
         <a href="{{ url_for('home') }}" class="btn btn-primary fs-6 fw-medium">Home</a>
     </div>
+    <p class="fs-1 fw-medium" style="text-align: center; color: white;">Patient Registration</p>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     {% for category, message in messages %}
@@ -25,7 +26,6 @@
     {% endif %}
     {% endwith %}
     <div>
-        <p class="fs-1 fw-medium" style="text-align: center; color: white;">Patient Registration</p>
         <div class="box container">
             <form method="post">
                 {{ form.hidden_tag() }}
@@ -94,7 +94,7 @@
     }
 
     body {
-        background-image: url('static/images/bg2.jpg');
+        background-image: url('/static/images/bg2.jpg');
         background-size: cover;
     }
 

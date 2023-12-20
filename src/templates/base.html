@@ -17,7 +17,12 @@
 
     <div class="d-flex justify-content-between" style="padding: 20px;">
         <a class="fs-3 fw-medium" style="text-decoration: none; text-align: center; color: white">MediBook+</a>
-        <a href="{{ url_for('home') }}" class="btn btn-primary fs-6 fw-medium">Home</a>
+        <div>
+            <a href="{{ url_for('home') }}" class="btn btn-primary fs-6 fw-medium">Home</a>
+            {% block nav %}
+
+            {% endblock %}
+        </div>
     </div>
 
     <P class="fs-1 fw-medium" style="text-align: center; color: white;"> MediBook Health System</P>
@@ -41,4 +46,5 @@
 {% block style %}
 
 {% endblock %}
+
 </html>
