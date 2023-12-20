@@ -21,10 +21,32 @@ Patient Dashboard
 {% endif %}
 {% endwith %}
 <br>
+
 <div class="px-4 text-center">
     <div class="row gx-5">
         <div class="col">
-            <div class="p-3">
+            <div class="row">
+                <p class="fs-4 fw-medium" style="text-align: center; color: white;">Your Appointments</p>
+                <table class="table table-hover table-dark w-auto" style="margin-left: auto; margin-right: auto;">
+                    <thead>
+                        <tr>
+                            <th style="color: yellow;">Doctor Name</th>
+                            <th style="color: yellow;">Appointment Date</th>
+                            <th style="color: yellow;">Appointments Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in accepted_appointments %}
+                        <tr>
+                            <td>{{ appointment.first_name }}</td>
+                            <td>{{ appointment.appointment_date }}</td>
+                            <td>{{ appointment.status }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class=" row p-3">
                 <p class="fs-4 fw-medium" style="text-align: center; color: white;">Doctors and their Scheduled
                     Appointments</p>
 
@@ -32,23 +54,25 @@ Patient Dashboard
                     <thead>
                         <tr>
                             <!-- Your Columns HERE -->
-                            <th scope="col">Doctor ID</th>
-                            <th scope="col">Doctor Name</th>
-                            <th scope="col">Doctor Speciality</th>
-                            <th scope="col">Phone No</th>
-                            <th scope="col">Booked Dates</th>
+                            <th scope="col" style="color: yellow;">Doctor ID</th>
+                            <th scope="col" style="color: yellow;">Doctor Name</th>
+                            <th scope="col" style="color: yellow;">Doctor Speciality</th>
+                            <th scope="col" style="color: yellow;">Phone No</th>
+                            <th scope="col" style="color: yellow;">Booked Dates</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Your rows inside the table HERE: -->
-                        {% for doctors in doctors %}
+                        {% for Appointments in Appointments %}
+                        {% if Appointments.status == 'accepted' %}
                         <tr>
-                            <td>{{ doctors.doctor_id }}</td>
-                            <td>{{ doctors.first_name }}</td>
-                            <td>{{ doctors.speciality }}</td>
-                            <td>{{ doctors.phone_number }}</td>
-                            <td>{{ doctors.date_of_birth }}</td>
+                            <td>{{ Appointments.doctor.doctor_id }}</td>
+                            <td>{{ Appointments.doctor.first_name }}</td>
+                            <td>{{ Appointments.doctor.speciality }}</td>
+                            <td>{{ Appointments.doctor.phone_number }}</td>
+                            <td>{{ Appointments.appointment_date }}</td>
                         </tr>
+                        {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
@@ -63,11 +87,13 @@ Patient Dashboard
                     <form method="POST" action="">
                         {{ form.csrf_token }}
                         <div>
-                            <label for="doctor" style="color: white; text-align: start;" class="form-label">Choose Doctor</label><br>
+                            <label for="doctor" style="color: white; text-align: start;" class="form-label">Choose
+                                Doctor</label><br>
                             {{ form.doctor(class="form-control", placeholder="Choose Doctor",
                             style="width:300px;")
                             }}<br>
-                            <label for="appointment_date" style="color: white; text-align: start;" class="form-label">Choose Appointment
+                            <label for="appointment_date" style="color: white; text-align: start;"
+                                class="form-label">Choose Appointment
                                 Date</label><br>
                             {{ form.appointment_date(class="form-control", placeholder="Appointment Date",
                             style="width:300px;") }}<br>

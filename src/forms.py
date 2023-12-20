@@ -8,14 +8,18 @@ from src import app
 with app.app_context():
     db.create_all()
 # --------------------------------------------------------- Appointment Form ------------------------------------------------------------------------
-class AppointmentForm(FlaskForm):
+class AppointmentRequestForm(FlaskForm):
     doctor = SelectField('Choose Doctor', coerce=int, validators=[DataRequired()])
     appointment_date = DateField('Appointment Date', validators=[DataRequired()])
     submit = SubmitField('Submit Appointment Request')
 
     def __init__(self, *args, **kwargs):
-        super(AppointmentForm, self).__init__(*args, **kwargs)
+        super(AppointmentRequestForm, self).__init__(*args, **kwargs)
         self.doctor.choices = [(0, 'Select Doctor')] + [(doctor.id, doctor.first_name) for doctor in Doctor.query.all()]
+
+class AppointmentResponseForm(FlaskForm):
+    action = SelectField('Action', choices=[('accept', 'Accept'), ('delete', 'Delete')], validators=[DataRequired()])
+    submit = SubmitField('Submit')
 # --------------------------------------------------------- Admin Login form ----------------------------------------------------------------------------
 class AdminLoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])

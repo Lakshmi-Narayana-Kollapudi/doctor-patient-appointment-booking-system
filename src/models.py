@@ -100,3 +100,16 @@ class Doctor(db.Model, UserMixin):
 
     def check_password_correction(self, attempted_password):
         return bcrypt.check_password_hash(self.password_hash, attempted_password)
+    
+
+
+# ----------------------------------------------------------------- Appointments --------------------------------------------------------------------------
+class Appointment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)
+    appointment_date = db.Column(db.DateTime, nullable=False)
+    status = db.Column(db.String(20), nullable=False, default='pending')  # Status: pending/accepted/deleted
+    
+    patient = db.relationship('Patient', backref=db.backref('appointments', lazy=True))
+    doctor = db.relationship('Doctor', backref=db.backref('appointments', lazy=True))

@@ -1,6 +1,6 @@
-from flask import render_template, url_for, redirect, flash, session
-from src.models import NewPatient, Patient, NewDoctor, Doctor, Admin
-from src.forms import RegisterForm, PatientLoginForm, DoctorRegisterForm, DoctorLoginForm, AdminLoginForm, AdminPasswordResetForm, AppointmentForm, UpdatePatientForm, UpdateDoctorForm
+from flask import render_template, url_for, redirect, flash, session, request
+from src.models import NewPatient, Patient, NewDoctor, Doctor, Admin, Appointment
+from src.forms import RegisterForm, PatientLoginForm, DoctorRegisterForm, DoctorLoginForm, AdminLoginForm, AdminPasswordResetForm, AppointmentRequestForm, UpdatePatientForm, UpdateDoctorForm, AppointmentResponseForm
 from src import app, db
 
 @app.route('/')
@@ -166,17 +166,34 @@ def delete_existing_doctor(doctor_id):
 
     return redirect('/admin/dashboard')
 # -------------------------------------------------------------------- Doctor Routes -----------------------------------------------------------------
-@app.route('/doctor/dashboard')
+@app.route('/doctor/dashboard', methods=['GET', 'POST'])
 def doctor_dashboard():
+    form = AppointmentResponseForm()
     patients = Patient.query.all()
     doctor_id = session.get('doctor_id')
     if doctor_id:
         # Fetch patient's specific data from the database using patient_id
         doctor = Doctor.query.get(doctor_id)
+        appointments = Appointment.query.filter_by(doctor_id=doctor.id).all()
 
         if doctor:
-            # Pass patient data to the dashboard template
-            return render_template('/doctor/doctor_dashboard.html', doctor=doctor,patients=patients)
+            if form.validate_on_submit():
+                action = form.action.data
+                appointment_id = request.form['appointment_id']
+                appointment = Appointment.query.get(appointment_id)
+                
+                if appointment:
+                    if action == 'accept':
+                        appointment.status = 'accepted'
+                        flash('Appointment accepted!',category='success')
+                    elif action == 'delete':
+                        appointment.status = 'deleted'
+                        flash('Appointment deleted!',category='danger')
+                    db.session.commit()
+                    return redirect(url_for('doctor_dashboard'))
+
+            
+            return render_template('/doctor/doctor_dashboard.html', doctor=doctor,patients=patients,appointments=appointments,form=form)
         else:
             flash('Doctor data not found.')
             return redirect('/doctor/login')
@@ -251,21 +268,33 @@ def doctor_update_profile():
 
     return render_template('doctor/doctor_update_profile.html', form=form)
 # -------------------------------------------------------------------- Patient Routes ----------------------------------------------------------------
-@app.route('/patient/dashboard')
+@app.route('/patient/dashboard', methods=['GET', 'POST'])
 def patient_dashboard():
-    form = AppointmentForm()
-    doctors=Doctor.query.all()
+    form = AppointmentRequestForm()
+    Appointments=Appointment.query.all()
     patient_id = session.get('patient_id')
     if patient_id:
         patient = Patient.query.get(patient_id)
 
         if patient:
-                if form.validate_on_submit():
-                    # Process the appointment booking logic here
-                            doctor_id = form.doctor.data
-                            appointment_date = form.appointment_date.data
-                        # Pass patient data to the dashboard template
-                return render_template('/patient/patient_dashboard.html', patient=patient, doctors=doctors, form=form)
+                if form.validate_on_submit():   
+                    doctor_id = form.doctor.data
+                    appointment_date = form.appointment_date.data
+                    new_appointment = Appointment(
+                        patient_id=patient.id,
+                        doctor_id=doctor_id,
+                        appointment_date=appointment_date
+                    )
+                    db.session.add(new_appointment)
+                    db.session.commit()
+                    flash('Appointment request sent!')
+                    return render_template('/patient/patient_dashboard.html', patient=patient,Appointments=Appointments , form=form)    
+                
+                accepted_appointments = Appointment.query.join(Doctor, Appointment.doctor_id == Doctor.id).\
+                    filter(Appointment.patient_id == patient.id).\
+                    add_columns(Doctor.first_name, Appointment.appointment_date, Appointment.status).all()
+                
+                return render_template('/patient/patient_dashboard.html', patient=patient,form=form,Appointments=Appointments,accepted_appointments=accepted_appointments)
         else:
             flash('Patient data not found.')
             return redirect('/patient/login')

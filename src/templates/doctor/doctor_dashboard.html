@@ -35,14 +35,35 @@
   <p class="fs-3 fw-medium" style="text-align: center; color: white;">Your Fixed Appointments...</p>
 
 
-  <table class="container table table-bordered">
-    <thead style="text-align: center;">
+  <table class="container table table-hover table-dark" style="margin-left: auto; margin-right: auto;">
+    <thead>
       <tr>
         <th>Patient Name</th>
         <th>Patient Number</th>
         <th>Appointed Date</th>
+        <th scope="col" style="width: 200px; text-align: center;">Action</th>
       </tr>
     </thead>
+    <tbody>
+      <!-- Your rows inside the table HERE: -->
+      {% for appointment in appointments %}
+      {% if appointment.status == 'accepted' %}
+          <tr>
+              <td>{{ appointment.patient.first_name }}</td>
+              <td>{{ appointment.patient.phone_number }}</td>
+              <td>{{ appointment.appointment_date }}</td>
+              <td>
+                <form method="POST">
+                    <input type="hidden" name="appointment_id" value="{{ appointment.id }}">
+                    {{ form.hidden_tag() }}
+                    {{ form.action() }}
+                    <input type="submit" value="Submit">
+                </form>
+            </td>
+          </tr>
+      {% endif %}
+      {% endfor %}
+  </tbody>
   </table>
   <p class="fs-3 fw-medium" style="text-align: center; color: white;">Appointment Requests for you...</p>
 
@@ -54,29 +75,29 @@
                 <th scope="col">Patient ID</th>
                 <th scope="col">Patient Name</th>
                 <th scope="col">Phone No</th>
-                <th scope="col">Date of Birth</th>
+                <th scope="col">Appointment Date</th>
                 <th scope="col" style="width: 200px; text-align: center;">Action</th>
             </tr>
         </thead>
         <tbody>
             <!-- Your rows inside the table HERE: -->
-            {% for patients in patients %}
-            <tr>
-                <td>{{ patients.id }}</td>
-                <td>{{ patients.first_name }} {{ patients.last_name }}</td>
-                <td>{{ patients.phone_number }}</td>
-                <td>{{ patients.date_of_birth }}</td>
-                <td style="width: 200px;">
-                    <div class="d-inline-flex justify-content-evenly" style="width: 200px;">
-                    <form action="/admin/approve_patient/{{ patients.id }}" method="post">
-                        <button class="btn btn-outline btn-sm btn-success" type="submit">Approve</button>
-                    </form>
-                    <form action="/admin/delete_patient/{{ patients.id }}" method="post">
-                        <button class="btn btn-outline btn-sm btn-danger" type="submit">Delete</button>
-                    </form>
-                </div>
-                </td>
-            </tr>
+            {% for appointment in appointments %}
+            {% if appointment.status == 'pending' %}
+                <tr>
+                    <td>{{ appointment.patient.id }}</td>
+                    <td>{{ appointment.patient.first_name }}</td>
+                    <td>{{ appointment.patient.phone_number }}</td>
+                    <td>{{ appointment.appointment_date }}</td>
+                    <td>
+                        <form method="POST">
+                            <input type="hidden" name="appointment_id" value="{{ appointment.id }}">
+                            {{ form.hidden_tag() }}
+                            {{ form.action() }}
+                            <input type="submit" value="Submit">
+                        </form>
+                    </td>
+                </tr>
+            {% endif %}
             {% endfor %}
         </tbody>
     </table>
