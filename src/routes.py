@@ -13,36 +13,46 @@ def registration():
 # -------------------------------------------------------------------- Admin Routes ------------------------------------------------------------------
 @app.route('/admin/dashboard')
 def admin_dashboard():
-    patients = Patient.query.all()
-    newpatients = NewPatient.query.all()
-    doctors = Doctor.query.all()
-    newdoctors = NewDoctor.query.all()
-    return render_template('/admin/admin_dashboard.html', patients=patients,newpatients=newpatients,doctors=doctors,newdoctors=newdoctors)
-
+    admin_id=session.get('admin_id')
+    if admin_id:
+        patients = Patient.query.all()
+        newpatients = NewPatient.query.all()
+        doctors = Doctor.query.all()
+        newdoctors = NewDoctor.query.all()
+        return render_template('/admin/admin_dashboard.html', patients=patients,newpatients=newpatients,doctors=doctors,newdoctors=newdoctors)
+    else:
+        flash('Please log in first.',category='danger')
+        return redirect('/admin/login')
+    
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
-    form = AdminLoginForm()
-    
-    if form.validate_on_submit():
-        email = form.email.data
-        password = form.password.data
+    if  session.get('admin_id'):
+        return redirect('/admin/dashboard')
+    else: 
+        form = AdminLoginForm()
         
-        admin = Admin.query.filter_by(email=email, password=password).first()
-        if admin:
-            flash('Login successful!',category='success')
-            # Redirect to admin dashboard or other admin functionality
-            return redirect('/admin/dashboard')
-        else:
-            flash('Invalid credentials. Please try again.',category='danger')
-    
-    return render_template('/admin/admin_login.html', form=form)
+        if form.validate_on_submit():
+            email = form.email.data
+            password = form.password.data
+            
+            admin = Admin.query.filter_by(email=email, password=password).first()
+            if admin:
+                flash('Login successful!',category='success')
+                # Redirect to admin dashboard or other admin functionality
+                session['admin_id'] = admin.id
+                return redirect('/admin/dashboard')
+            else:
+                flash('Invalid credentials. Please try again.',category='danger')
+        
+        return render_template('/admin/admin_login.html', form=form)
 
 
 
-@app.route('/admin/update/<int:admin_id>', methods=['GET', 'POST'])
-def admin_update(admin_id):
+@app.route('/admin/update', methods=['GET', 'POST'])
+def admin_update():
     form = AdminPasswordResetForm()
+    admin_id=session.get('admin_id')
 
     admin = Admin.query.get(admin_id)
     if not admin:
@@ -165,6 +175,14 @@ def delete_existing_doctor(doctor_id):
         flash('Doctor deleted successfully.')
 
     return redirect('/admin/dashboard')
+
+@app.route('/admin/logout', methods=['GET', 'POST'])
+def admin_logout():
+    if not session.get('admin_id'):
+        return redirect('/admin/login')
+    if session.get('admin_id'):
+        session.pop('admin_id', None)
+        return redirect('/admin/login')
 # -------------------------------------------------------------------- Doctor Routes -----------------------------------------------------------------
 @app.route('/doctor/dashboard', methods=['GET', 'POST'])
 def doctor_dashboard():
@@ -195,10 +213,10 @@ def doctor_dashboard():
             
             return render_template('/doctor/doctor_dashboard.html', doctor=doctor,patients=patients,appointments=appointments,form=form)
         else:
-            flash('Doctor data not found.')
+            flash('Doctor data not found.',category='danger')
             return redirect('/doctor/login')
     else:
-        flash('Please log in first.')
+        flash('Please log in first.',category='danger')
         return redirect('/doctor/login')
 
 
@@ -231,27 +249,30 @@ def doctor_register():
 
 @app.route('/doctor/login', methods=['GET', 'POST'])
 def doctor_login():
-    form = DoctorLoginForm()
+    if  session.get('doctor_id'):
+        return redirect('/doctor/dashboard')
+    else:    
+        form = DoctorLoginForm()
 
-    if form.validate_on_submit():
-        email = form.email.data
-        password = form.password.data
+        if form.validate_on_submit():
+            email = form.email.data
+            password = form.password.data
 
-        # Check if the provided credentials exist in the Patient model
-        doctor = Doctor.query.filter_by(email=email).first()
-        newdoctor = NewDoctor.query.filter_by(email=email).first()
-        if newdoctor:
-            flash('Your registration is still pending approval.', category='warning')
-        elif doctor and doctor.check_password_correction(
-                attempted_password=password
-        ):
-            flash(f'Success! You are logged in as: {doctor.first_name}', category='success')
-            session['doctor_id'] = doctor.id
-            return redirect('/doctor/dashboard')
-        else:
-            flash('Invalid credentials. Please try again.',category='danger')
+            # Check if the provided credentials exist in the Patient model
+            doctor = Doctor.query.filter_by(email=email).first()
+            newdoctor = NewDoctor.query.filter_by(email=email).first()
+            if newdoctor:
+                flash('Your registration is still pending approval.', category='warning')
+            elif doctor and doctor.check_password_correction(
+                    attempted_password=password
+            ):
+                flash(f'Success! You are logged in as: {doctor.first_name}', category='success')
+                session['doctor_id'] = doctor.id
+                return redirect('/doctor/dashboard')
+            else:
+                flash('Invalid credentials. Please try again.',category='danger')
 
-    return render_template('/doctor/doctor_login.html', form=form)
+        return render_template('/doctor/doctor_login.html', form=form)
 
 @app.route('/doctor/update_profile', methods=['GET', 'POST'])
 def doctor_update_profile():
@@ -267,6 +288,14 @@ def doctor_update_profile():
         return redirect(url_for('doctor_dashboard'))
 
     return render_template('doctor/doctor_update_profile.html', form=form)
+
+@app.route('/doctor/logout', methods=['GET', 'POST'])
+def doctor_logout():
+    if not session.get('doctor_id'):
+        return redirect('/doctor/login')
+    if session.get('doctor_id'):
+        session.pop('doctor_id', None)
+        return redirect('/doctor/login')
 # -------------------------------------------------------------------- Patient Routes ----------------------------------------------------------------
 @app.route('/patient/dashboard', methods=['GET', 'POST'])
 def patient_dashboard():
@@ -287,7 +316,7 @@ def patient_dashboard():
                     )
                     db.session.add(new_appointment)
                     db.session.commit()
-                    flash('Appointment request sent!')
+                    flash('Appointment request sent!',category='success')
                     return render_template('/patient/patient_dashboard.html', patient=patient,Appointments=Appointments , form=form)    
                 
                 accepted_appointments = Appointment.query.join(Doctor, Appointment.doctor_id == Doctor.id).\
@@ -296,10 +325,10 @@ def patient_dashboard():
                 
                 return render_template('/patient/patient_dashboard.html', patient=patient,form=form,Appointments=Appointments,accepted_appointments=accepted_appointments)
         else:
-            flash('Patient data not found.')
+            flash('Patient data not found.',category='danger')
             return redirect('/patient/login')
     else:
-        flash('Please log in first.')
+        flash('Please log in first.',category='danger')
         return redirect('/patient/login')
     
 
@@ -330,25 +359,27 @@ def patient_register():
 
 @app.route('/patient/login', methods=['GET', 'POST'])
 def patient_login():
-    form = PatientLoginForm()
+    if  session.get('patient_id'):
+        return redirect('/patient/dashboard')
+    else:
+        form = PatientLoginForm()
+        if form.validate_on_submit():
+            email = form.email.data
+            password = form.password.data
 
-    if form.validate_on_submit():
-        email = form.email.data
-        password = form.password.data
+            # Check if the provided credentials exist in the Patient model
+            patient = Patient.query.filter_by(email=email).first()
+            newpatient = NewPatient.query.filter_by(email=email).first()
+            if newpatient:
+                flash('Your registration is still pending approval.', category='warning')
+            elif patient and patient.check_password_correction(attempted_password=password):
+                    session['patient_id'] = patient.id
+                    flash(f'Success! You are logged in as: {patient.first_name}', category='success')
+                    return redirect(url_for('patient_dashboard'))
+            else:
+                flash('Invalid credentials. Please try again.', category='danger')
 
-        # Check if the provided credentials exist in the Patient model
-        patient = Patient.query.filter_by(email=email).first()
-        newpatient = NewPatient.query.filter_by(email=email).first()
-        if newpatient:
-             flash('Your registration is still pending approval.', category='warning')
-        elif patient and patient.check_password_correction(attempted_password=password):
-                session['patient_id'] = patient.id
-                flash(f'Success! You are logged in as: {patient.first_name}', category='success')
-                return redirect(url_for('patient_dashboard'))
-        else:
-            flash('Invalid credentials. Please try again.', category='danger')
-
-    return render_template('/patient/patient_login.html', form=form)
+        return render_template('/patient/patient_login.html', form=form)
 
 @app.route('/patient/update_profile', methods=['GET', 'POST'])
 def patient_update_profile():
@@ -364,3 +395,12 @@ def patient_update_profile():
         return redirect(url_for('patient_dashboard'))
 
     return render_template('patient/patient_update_profile.html', form=form)
+
+@app.route('/patient/logout', methods=['GET', 'POST'])
+def patient_logout():
+    if not session.get('patient_id'):
+        return redirect('/patient/login')
+
+    if session.get('patient_id'):
+        session.pop('patient_id', None)
+        return redirect('/patient/login')
