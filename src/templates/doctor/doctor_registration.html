@@ -28,7 +28,7 @@
         <p class="fs-1 fw-medium" style="text-align: center; color: white;">Doctor Registration</p><br>
         <div class="box container">
             <form method="post">
-                {{ form.hidden_tag() }}
+                {{ form.csrf_token }}
                 <div class="row">
                     <div class="col">
                         <label for="first_name" class="form-label">First Name:</label>

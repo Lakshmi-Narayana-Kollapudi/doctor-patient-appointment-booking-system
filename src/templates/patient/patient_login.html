@@ -21,7 +21,7 @@ Patient Login
     </div>
     <div class="box container">
         <form method="POST" action="">
-            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
             <div>
                 <label for="email" class="form-label">Email:</label><br>
                 {{ form.email(size=100,class="form-control", placeholder="Email") }}<br>
