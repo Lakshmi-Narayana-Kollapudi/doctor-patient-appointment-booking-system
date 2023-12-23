@@ -111,5 +111,5 @@ class Appointment(db.Model):
     appointment_date = db.Column(db.DateTime, nullable=False)
     status = db.Column(db.String(20), nullable=False, default='pending')  # Status: pending/accepted/deleted
     
-    patient = db.relationship('Patient', backref=db.backref('appointments', lazy=True))
-    doctor = db.relationship('Doctor', backref=db.backref('appointments', lazy=True))
+    patient = db.relationship('Patient', backref=db.backref('appointments', lazy=True, cascade='all, delete-orphan'))
+    doctor = db.relationship('Doctor', backref=db.backref('appointments', lazy=True, cascade='all, delete-orphan'))
