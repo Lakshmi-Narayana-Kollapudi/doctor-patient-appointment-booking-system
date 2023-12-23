@@ -13,13 +13,14 @@ def registration():
 # -------------------------------------------------------------------- Admin Routes ------------------------------------------------------------------
 @app.route('/admin/dashboard')
 def admin_dashboard():
+    form = AdminPasswordResetForm()
     admin_id=session.get('admin_id')
     if admin_id:
         patients = Patient.query.all()
         newpatients = NewPatient.query.all()
         doctors = Doctor.query.all()
         newdoctors = NewDoctor.query.all()
-        return render_template('/admin/admin_dashboard.html', patients=patients,newpatients=newpatients,doctors=doctors,newdoctors=newdoctors)
+        return render_template('/admin/admin_dashboard.html', patients=patients,newpatients=newpatients,doctors=doctors,newdoctors=newdoctors,form=form)
     else:
         flash('Please log in first.',category='danger')
         return redirect('/admin/login')
