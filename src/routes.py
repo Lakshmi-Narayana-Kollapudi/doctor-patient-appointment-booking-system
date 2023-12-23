@@ -101,7 +101,7 @@ def approve_patient(new_patient_id):
         db.session.delete(new_patient)
         db.session.commit()
         
-        flash('Patient approved successfully.')
+        flash('Patient approved successfully.',category='success')
 
     return redirect('/admin/dashboard')
 

@@ -63,9 +63,11 @@
                     <td style="width: 200px;">
                         <div class="d-inline-flex justify-content-evenly" style="width: 200px;">
                             <form action="/admin/approve_patient/{{ newpatients.id }}" method="post">
+                                {{ form.csrf_token }}
                                 <button class="btn btn-outline btn-sm btn-success" type="submit">Approve</button>
                             </form>
                             <form action="/admin/delete_patient/{{ newpatients.id }}" method="post">
+                                {{ form.csrf_token }}
                                 <button class="btn btn-outline btn-sm btn-danger" type="submit">Delete</button>
                             </form>
                         </div>
@@ -109,9 +111,11 @@
                     <td style="width: 200px;">
                         <div class="d-inline-flex justify-content-evenly" style="width: 200px;">
                             <form action="/admin/approve_doctor/{{ newdoctors.id }}" method="post">
+                                {{ form.csrf_token }}
                                 <button class="btn btn-outline btn-sm btn-success" type="submit">Approve</button>
                             </form>
                             <form action="/admin/delete_doctor/{{ newdoctors.id }}" method="post">
+                                {{ form.csrf_token }}
                                 <button class="btn btn-outline btn-sm btn-danger" type="submit">Delete</button>
                             </form>
                         </div>
@@ -151,6 +155,7 @@
                     <td style="width: 200px;">
                         <div class="d-inline-flex justify-content-evenly" style="width: 200px;">
                             <form action="/admin/delete/patient/{{ patients.id }}" method="post">
+                                {{ form.csrf_token }}
                                 <button class="btn btn-outline btn-sm btn-danger" type="submit">Delete</button>
                             </form>
                         </div>
@@ -194,6 +199,7 @@
                     <td style="width: 200px;">
                         <div class="d-inline-flex justify-content-evenly" style="width: 200px;">
                             <form action="/admin/delete/doctor/{{ doctors.id }}" method="post">
+                                {{ form.csrf_token }}
                                 <button class="btn btn-outline btn-sm btn-danger" type="submit">Delete</button>
                             </form>
                         </div>
