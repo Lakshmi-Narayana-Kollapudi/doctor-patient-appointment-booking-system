@@ -11,13 +11,17 @@
 
 <body>
 
-  <div class="d-flex justify-content-between" style="padding: 20px;">
-    <a class="fs-3 fw-medium" style="text-decoration: none; color: white;">MediBook+</a>
-    <div>
-    <a href="{{ url_for('doctor_logout') }}" class="btn btn-primary fs-6 fw-medium">Logout</a>
-    <a href="{{ url_for('doctor_update_profile') }}" class="btn btn-primary fs-6 fw-medium">Update Profile</a>
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center py-3">
+        <a class="fs-3 fw-medium text-decoration-none text-white">MediBook+</a>
+        <div>
+          <a href="{{ url_for('doctor_logout') }}" class="btn btn-primary btn-sm fs-6 fw-medium">Logout</a>
+          <a href="{{ url_for('doctor_update_profile') }}" class="btn btn-primary btn-sm fs-6 fw-medium">Update Profile</a>
+        </div>
     </div>
-  </div>
+</div>
+
+
   <p class="fs-1 fw-medium" style="text-align: center; color: white;">MediBook Health System</p>
   <p class="fs-3 fw-medium" style="text-align: center; color: white;">Welcome {{doctor.first_name}}</p>
   <div class="container">

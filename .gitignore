@@ -1,1 +1,2 @@
 .env
+/instance/sqlite_database.db

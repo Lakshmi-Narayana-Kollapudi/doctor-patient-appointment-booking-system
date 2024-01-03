@@ -13,13 +13,18 @@
 
 <body style="background-image: url('/static/images/bg2.jpg'); background-size: cover;">
 
-    <div class="d-flex justify-content-between" style="padding: 20px;">
-        <a class="fs-3 fw-medium" style="text-decoration: none; text-align: center; color: white">MediBook+</a>
-        <div>
-            <a href="{{ url_for('admin_logout') }}" class="btn btn-primary fs-6 fw-medium">Logout</a>
-            <a href="{{ url_for('admin_update') }}" class="btn btn-primary fs-6 fw-medium">Reset Password</a>
+
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center py-3">
+            <a class="fs-3 fw-medium text-decoration-none text-white">MediBook+</a>
+            <div>
+                <a href="{{ url_for('admin_logout') }}" class="btn btn-primary btn-sm fs-6 fw-medium">Logout</a>
+                <a href="{{ url_for('admin_update') }}" class="btn btn-primary btn-sm fs-6 fw-medium">Reset Password</a>
+            </div>
         </div>
     </div>
+    
+    
 
     <P class="fs-1 fw-medium" style="text-align: center; color: white;"> MediBook Health System</P>
     <p class="fs-2 fw-medium" style="text-align: center; color: white;">Welcome Admin</p>
@@ -33,6 +38,9 @@
     {% endfor %}
     {% endif %}
     {% endwith %}<br>
+
+
+
     <p class="fs-3 fw-medium" style="text-align: center; color: white;">Patient Registration Requests</p>
     <div class="table-responsive">
         <table class="table table-hover table-dark w-auto" style="margin-left: auto; margin-right: auto;">
@@ -77,6 +85,9 @@
             </tbody>
         </table>
     </div>
+
+
+
     <p class="fs-3 fw-medium" style="text-align: center; color: white;">Doctor Registration Requests</p>
     <div class="table-responsive">
         <table class="table table-hover table-dark w-auto" style="margin-left: auto; margin-right: auto;">
@@ -108,8 +119,8 @@
                     <td>{{ newdoctors.phone_number }}</td>
                     <td>{{ newdoctors.date_of_birth }}</td>
                     <td>{{ newdoctors.address }}</td>
-                    <td style="width: 200px;">
-                        <div class="d-inline-flex justify-content-evenly" style="width: 200px;">
+                    <td style="max-width: 200px;">
+                        <div class="d-flex justify-content-evenly" style="width: 100%;">
                             <form action="/admin/approve_doctor/{{ newdoctors.id }}" method="post">
                                 {{ form.csrf_token }}
                                 <button class="btn btn-outline btn-sm btn-success" type="submit">Approve</button>
@@ -125,6 +136,10 @@
             </tbody>
         </table>
     </div>
+
+
+
+    
     <p class="fs-3 fw-medium" style="text-align: center; color: white;">Registrered Patients</p>
     <div class="table-responsive">
         <table class="table table-hover table-dark w-auto" style="margin-left: auto; margin-right: auto;">
@@ -165,6 +180,10 @@
             </tbody>
         </table>
     </div>
+
+
+
+
     <p class="fs-3 fw-medium" style="text-align: center; color: white;">Registrered Doctors</p>
     <div class="table-responsive">
         <table class="table table-hover table-dark w-auto" style="margin-left: auto; margin-right: auto;">

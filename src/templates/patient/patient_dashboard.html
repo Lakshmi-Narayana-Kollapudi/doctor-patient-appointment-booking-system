@@ -13,11 +13,14 @@
 
 <body style="background-image: url('/static/images/bg2.jpg'); background-size: cover;">
 
-    <div class="d-flex justify-content-between" style="padding: 20px;">
-        <a class="fs-3 fw-medium" style="text-decoration: none; text-align: center; color: white">MediBook+</a>
-        <div>
-            <a href="{{ url_for('patient_logout') }}" class="btn btn-primary fs-6 fw-medium">Logout</a>
-            <a href="{{ url_for('patient_update_profile') }}" class="btn btn-primary fs-6 fw-medium">Update Profile</a>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center py-3">
+            <a class="fs-3 fw-medium text-decoration-none text-white">MediBook+</a>
+            <div>
+                <a href="{{ url_for('patient_logout') }}" class="btn btn-primary btn-sm fs-6 fw-medium">Logout</a>
+                <a href="{{ url_for('patient_update_profile') }}" class="btn btn-primary btn-sm fs-6 fw-medium">Update
+                    Profile</a>
+            </div>
         </div>
     </div>
 
@@ -41,79 +44,89 @@
             <div class="col">
                 <div class="row">
                     <p class="fs-4 fw-medium" style="text-align: center; color: white;">Your Appointments</p>
-                    <table class="table table-hover table-dark w-auto" style="margin-left: auto; margin-right: auto;">
-                        <thead>
-                            <tr>
-                                <th style="color: yellow;">Doctor Name</th>
-                                <th style="color: yellow;">Appointment Date</th>
-                                <th style="color: yellow;">Appointments Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for appointment in accepted_appointments %}
-                            <tr>
-                                <td>{{ appointment.first_name }}</td>
-                                <td>{{ appointment.appointment_date }}</td>
-                                <td>{{ appointment.status }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="container table table-hover table-dark w-auto"
+                            style="margin-left: auto; margin-right: auto;">
+                            <thead>
+                                <tr>
+                                    <th style="color: yellow;">Doctor Name</th>
+                                    <th style="color: yellow;">Appointment Date</th>
+                                    <th style="color: yellow;">Appointments Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in accepted_appointments %}
+                                <tr>
+                                    <td>{{ appointment.first_name }}</td>
+                                    <td>{{ appointment.appointment_date }}</td>
+                                    <td>{{ appointment.status }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class=" row p-3">
-                    <p class="fs-4 fw-medium" style="text-align: center; color: white;">Doctors and their Scheduled
+                    <p class="fs-3 fw-medium" style="text-align: center; color: white;">Doctors and their Scheduled
                         Appointments</p>
-
-                    <table class="container table table-hover table-dark">
-                        <thead>
-                            <tr>
-                                <!-- Your Columns HERE -->
-                                <th scope="col" style="color: yellow;">Doctor ID</th>
-                                <th scope="col" style="color: yellow;">Doctor Name</th>
-                                <th scope="col" style="color: yellow;">Doctor Speciality</th>
-                                <th scope="col" style="color: yellow;">Phone No</th>
-                                <th scope="col" style="color: yellow;">Booked Dates</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Your rows inside the table HERE: -->
-                            {% for Appointments in Appointments %}
-                            {% if Appointments.status == 'accepted' %}
-                            <tr>
-                                <td>{{ Appointments.doctor.doctor_id }}</td>
-                                <td>{{ Appointments.doctor.first_name }}</td>
-                                <td>{{ Appointments.doctor.speciality }}</td>
-                                <td>{{ Appointments.doctor.phone_number }}</td>
-                                <td>{{ Appointments.appointment_date }}</td>
-                            </tr>
-                            {% endif %}
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="container table table-hover table-dark w-auto"
+                            style="margin-left: auto; margin-right: auto;">
+                            <thead>
+                                <tr>
+                                    <!-- Your Columns HERE -->
+                                    <th scope="col" style="color: yellow;">Doctor ID</th>
+                                    <th scope="col" style="color: yellow;">Doctor Name</th>
+                                    <th scope="col" style="color: yellow;">Doctor Speciality</th>
+                                    <th scope="col" style="color: yellow;">Phone No</th>
+                                    <th scope="col" style="color: yellow;">Booked Dates</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Your rows inside the table HERE: -->
+                                {% for Appointments in Appointments %}
+                                {% if Appointments.status == 'accepted' %}
+                                <tr>
+                                    <td>{{ Appointments.doctor.doctor_id }}</td>
+                                    <td>{{ Appointments.doctor.first_name }}</td>
+                                    <td>{{ Appointments.doctor.speciality }}</td>
+                                    <td>{{ Appointments.doctor.phone_number }}</td>
+                                    <td>{{ Appointments.appointment_date }}</td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="col">
                 <div class="p-3">
-                    <p class="fs-4 fw-medium" style="text-align: center; color: white;">Schedule your appointment with a
+                    <p class="fs-4 fw-medium text" style="text-align: center; color: white; text-shadow: 0 15px 25px rgba(0, 0, 0, 0.977);">Schedule your appointment with a
                         Doctor</p>
-                    <div
-                        style="padding: 40px; width: fit-content;background: rgba(5, 28, 48, 0.925); box-sizing: border-box; box-shadow: 0 15px 25px rgba(0, 0, 0, .6); border-radius: 10px;margin-left: 150px;">
-                        <form method="POST" action="">
-                            {{ form.csrf_token }}
-                            <div>
-                                <label for="doctor" style="color: white; text-align: start;" class="form-label">Choose
-                                    Doctor</label><br>
-                                {{ form.doctor(class="form-control", placeholder="Choose Doctor",
-                                style="width:300px;")
-                                }}<br>
-                                <label for="appointment_date" style="color: white; text-align: start;"
-                                    class="form-label">Choose Appointment
-                                    Date</label><br>
-                                {{ form.appointment_date(class="form-control", placeholder="Appointment Date",
-                                style="width:300px;") }}<br>
-                                {{ form.submit(class="btn btn-warning fs-6 fw-bold") }}
+                    <div class="container">
+                        <div class="row justify-content-center mt-5">
+                            <div class="col-md-6">
+                                <div class="box">
+                                    <form method="POST" action="">
+                                        {{ form.csrf_token }}
+                                        <div class="mb-3">
+                                            <label for="doctor" class="form-label">Choose Doctor</label><br>
+                                            {{ form.doctor(class="form-control", placeholder="Choose Doctor")}}
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="appointment_date" class="form-label">Choose Appointment
+                                                Date</label><br>
+                                            {{ form.appointment_date(class="form-control", placeholder="Appointment
+                                            Date") }}
+                                        </div>
+                                        <div class="mb-3 d-grid pt-3">
+                                            {{ form.submit(class="btn btn-sm btn-warning mb-3 fs-6 fw-bold") }}
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,5 +143,36 @@
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
 </body>
+
+<style>
+    .box {
+        width: 100%;
+        padding: 40px;
+        background: rgba(5, 28, 48, 0.925);
+        box-sizing: border-box;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+        border-radius: 10px;
+        color: white;
+    }
+
+    label {
+        color: white;
+    }
+
+    @media (min-width: 992px) {
+        .box {
+            width: 400px;
+            height: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .text{
+
+            margin-left: 70px;
+        }
+    }
+
+</style>
 
 </html>

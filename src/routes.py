@@ -102,7 +102,7 @@ def approve_patient(new_patient_id):
         db.session.delete(new_patient)
         db.session.commit()
         
-        flash('Patient approved successfully.',category='success')
+        flash(f'{patient.first_name} approved successfully. [patient]',category='success')
 
     return redirect('/admin/dashboard')
 
@@ -113,7 +113,7 @@ def delete_patient(new_patient_id):
     if patient:
         db.session.delete(patient)
         db.session.commit()
-        flash('Patient deleted successfully.')
+        flash(f'{patient.first_name} deleted successfully. [Patient]')
         # Notify patient about deletion if needed
     return redirect('/admin/dashboard')
 
@@ -123,7 +123,7 @@ def delete_existing_patient(patient_id):
     if patient:
         db.session.delete(patient)
         db.session.commit()
-        flash('Patient deleted successfully.')
+        flash(f'{patient.first_name} deleted successfully. [Patient]')
         # Notify patient about deletion if needed
     return redirect('/admin/dashboard')
 
@@ -154,7 +154,7 @@ def approve_doctor(new_doctor_id):
         db.session.delete(new_doctor)
         db.session.commit()
         
-        flash('Doctor approved successfully.')
+        flash(f'{doctor.first_name} approved successfully. [Doctor]')
     return redirect('/admin/dashboard')
 
 @app.route('/admin/delete_doctor/<int:new_doctor_id>', methods=['POST'])
@@ -163,7 +163,7 @@ def delete_doctor(new_doctor_id):
     if doctor:
         db.session.delete(doctor)
         db.session.commit()
-        flash('Doctor deleted successfully.')
+        flash(f'{doctor.first_name} deleted successfully. [Doctor]')
 
     return redirect('/admin/dashboard')
 
@@ -173,7 +173,7 @@ def delete_existing_doctor(doctor_id):
     if doctor:
         db.session.delete(doctor)
         db.session.commit()
-        flash('Doctor deleted successfully.')
+        flash(f'{doctor.first_name} deleted successfully. [Doctor]')
 
     return redirect('/admin/dashboard')
 

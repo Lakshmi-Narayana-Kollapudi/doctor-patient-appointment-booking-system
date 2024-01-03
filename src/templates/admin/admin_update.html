@@ -3,9 +3,7 @@
 
 <head>
     <title>
-        {% block title %}
-
-        {% endblock %}
+        Admin Profile Update
     </title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,9 +17,6 @@
         <a class="fs-3 fw-medium" style="text-decoration: none; text-align: center; color: white">MediBook+</a>
         <div>
             <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary fs-6 fw-medium">Dashboard</a>
-            {% block nav %}
-
-            {% endblock %}
         </div>
     </div>
 
@@ -41,26 +36,33 @@
             {% endfor %}
             {% endif %}
             {% endwith %}
-        </div><br>
-        <div class="box container">
-            <form method="POST" action="">
-                {{ form.csrf_token }}
-                <div>
-                    <label for="email" class="form-label">Email:</label><br>
-                    {{ form.new_email(size=100,class="form-control", placeholder="Email") }}<br>
+        </div>
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-6">
+                    <div class="box">
+                        <form method="POST" action="">
+                            {{ form.csrf_token }}
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email:</label><br>
+                                {{ form.new_email(size=100,class="form-control", placeholder="Email") }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password:</label>
+                                {{ form.new_password(size=50,class="form-control", placeholder="Password") }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password:</label>
+                                {{ form.confirm_password(size=50,class="form-control", placeholder="Confirm Password")
+                                }}<br>
+                            </div>
+                            <div class="mb-3 d-grid">
+                                {{ form.submit(class="btn btn-primary mb-3 fw-medium") }}
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div>
-                    <label for="password" class="form-label">Password:</label>
-                    {{ form.new_password(size=50,class="form-control", placeholder="Password") }}<br>
-                </div>
-                <div>
-                    <label for="password" class="form-label">Password:</label>
-                    {{ form.confirm_password(size=50,class="form-control", placeholder="Confirm Password") }}<br>
-                </div>
-                <div class="row" style="padding: 0px 20px;">
-                    {{ form.submit(class="btn btn-primary mb-3 fw-medium") }}
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -79,20 +81,24 @@
 
 <style>
     .box {
-        position: relative;
-        top: 180px;
-        left: 13%;
-        width: 400px;
-        height: 400px;
+        width: 100%;
         padding: 40px;
-        transform: translate(-50%, -50%);
         background: rgba(5, 28, 48, 0.925);
         box-sizing: border-box;
         box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
         border-radius: 10px;
+        color: white;
     }
 
     label {
         color: white;
+    }
+
+    @media (min-width: 992px) {
+        .box {
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 </style>

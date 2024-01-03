@@ -23,10 +23,14 @@ Patient Profile Update
         {% endif %}
         {% endwith %}
     </div>
-    <div class="box container">
+
+
+
+<div class="container">
+    <div class="form-container">
         <form method="post">
             {{ form.csrf_token }}
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col">
                     <label for="first_name" class="form-label">First Name:</label>
                     {{ form.first_name(size=20,class="form-control", placeholder="First Name") }}
@@ -36,7 +40,7 @@ Patient Profile Update
                     {{ form.last_name(size=20,class="form-control", placeholder="Last Name") }}
                 </div>
             </div><br>
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col">
                     <label for="email" class="form-label">Email:</label>
                     {{ form.email(size=100,class="form-control", placeholder="Email") }}
@@ -46,7 +50,7 @@ Patient Profile Update
                     {{ form.phone_number(size=20,class="form-control", placeholder="Phone No") }}
                 </div>
             </div><br>
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col">
                     <label for="date_of_birth" class="form-label">Date of Birth:</label>
                     {{ form.date_of_birth(size=30,class="form-control", placeholder="Date of Birth") }}
@@ -56,29 +60,29 @@ Patient Profile Update
                     {{ form.address(size=100,class="form-control", placeholder="First Name") }}
                 </div>
             </div>
-            <div class="row" style="padding: 30px;">
+            <div class="row justify-content-center pt-3">
                 {{ form.submit(class="btn btn-primary mb-3 fw-medium") }}
             </div>
         </form>
     </div>
+</div>
+
 
 {% endblock %}
 
 {% block style %}
 
 <style>
-    .box {
-        position: relative;
-        top: 200px;
-        left: 25%;
-        width: 800px;
-        height: 400px;
+     .form-container {
+        max-width: 800px;
+        margin: 0 auto;
         padding: 40px;
-        transform: translate(-50%, -50%);
         background: rgba(5, 28, 48, 0.925);
-        box-sizing: border-box;
         box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
         border-radius: 10px;
+        box-sizing: border-box;
+        position: relative;
+        top: 30px;
     }
 
 

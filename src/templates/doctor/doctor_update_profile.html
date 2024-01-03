@@ -11,22 +11,24 @@ Doctor Profile Update
 {% block content %}
 
 <p class="fs-2 fw-medium" style="text-align: center; color: white;"> Update Profile</p>
-    <div class="container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="container alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="container alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <div class="box container">
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</div>
+
+<div class="container">
+    <div class="form-container">
         <form method="post">
             {{ form.csrf_token }}
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col">
                     <label for="first_name" class="form-label">First Name:</label>
                     {{ form.first_name(size=20,class="form-control", placeholder="First Name") }}
@@ -36,7 +38,7 @@ Doctor Profile Update
                     {{ form.last_name(size=20,class="form-control", placeholder="Last Name") }}
                 </div>
             </div><br>
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col">
                     <label for="email" class="form-label">Email:</label>
                     {{ form.email(size=100,class="form-control", placeholder="Email") }}
@@ -46,7 +48,7 @@ Doctor Profile Update
                     {{ form.phone_number(size=20,class="form-control", placeholder="Phone No") }}
                 </div>
             </div><br>
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col">
                     <label for="speciality" class="form-label">Speciality:</label>
                     {{ form.speciality(size=20,class="form-control", placeholder="Speciality") }}
@@ -56,30 +58,28 @@ Doctor Profile Update
                     {{ form.address(size=100,class="form-control", placeholder="First Name") }}
                 </div>
             </div>
-            <div class="row" style="padding: 40px 30px 30px;">
+            <div class="row justify-content-center pt-3">
                 {{ form.submit(class="btn btn-primary mb-3 fw-medium") }}
-            </div>
             </div>
         </form>
     </div>
+</div>
 
 {% endblock %}
 
 {% block style %}
 
 <style>
-    .box {
-        position: relative;
-        top: 200px;
-        left: 25%;
-        width: 800px;
-        height: 400px;
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
         padding: 40px;
-        transform: translate(-50%, -50%);
         background: rgba(5, 28, 48, 0.925);
-        box-sizing: border-box;
         box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
         border-radius: 10px;
+        box-sizing: border-box;
+        position: relative;
+        top: 30px;
     }
 
 

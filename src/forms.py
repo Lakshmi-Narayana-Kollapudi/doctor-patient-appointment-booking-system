@@ -11,7 +11,7 @@ with app.app_context():
 class AppointmentRequestForm(FlaskForm):
     doctor = SelectField('Choose Doctor', coerce=int, validators=[DataRequired()])
     appointment_date = DateField('Appointment Date', validators=[DataRequired()])
-    submit = SubmitField('Submit Appointment Request')
+    submit = SubmitField('Submit Request')
 
     def __init__(self, *args, **kwargs):
         super(AppointmentRequestForm, self).__init__(*args, **kwargs)
